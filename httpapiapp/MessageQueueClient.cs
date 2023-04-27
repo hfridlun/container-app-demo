@@ -34,13 +34,14 @@ public class MessageQueueClient
         return $"Queue '{_queueClient.Name}' has {properties.ApproximateMessagesCount} message{(properties.ApproximateMessagesCount != 1 ? "s" : "")}";
     }
 
-    public async Task<bool> SendMessage(string message) => await SendMessageToQueue(Guid.NewGuid().ToString());
-    //public async Task<bool> SendMessage(string message) => await SendMessageToQueue($"{Guid.NewGuid()}--{message}");
+    //public async Task<bool> SendMessage(string message) => await SendMessageToQueue(Guid.NewGuid().ToString());
+    public async Task<bool> SendMessage(string message) => await SendMessageToQueue(message);
 
     private async Task<bool> SendMessageToQueue(string message)
     {
         try
         {
+            _logger.LogInformation($"Message received by httpapi: {message}");
             await _queueClient.SendMessageAsync(message);
             return true;
         }
